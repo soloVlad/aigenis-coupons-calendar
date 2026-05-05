@@ -1,7 +1,0 @@
-{
-  "name": "aigenis-coupons-calendar",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "angular-standalone"
-}
