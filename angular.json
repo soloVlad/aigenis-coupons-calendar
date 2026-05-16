@@ -123,6 +123,9 @@
               "buildTarget": "aigenis-coupons-calendar:build:development"
             }
           },
+          "options": {
+            "proxyConfig": "proxy.conf.json"
+          },
           "defaultConfiguration": "development"
         },
         "ionic-cordova-serve": {

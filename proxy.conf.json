@@ -1,0 +1,10 @@
+{
+  "/aigenis-api": {
+    "target": "https://invest.aigenis.by",
+    "secure": true,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/aigenis-api": ""
+    }
+  }
+}
