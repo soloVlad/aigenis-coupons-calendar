@@ -1,8 +1,10 @@
-import { Injectable } from '@angular/core';
+import { Service } from '@angular/core';
 
-@Injectable()
+const ACCESS_TOKEN_KEY = 'access_token';
+
+@Service()
 export class AuthController {
-  #accessToken: string = '';
+  #accessToken = sessionStorage.getItem(ACCESS_TOKEN_KEY) ?? '';
 
   get accessToken() {
     return this.#accessToken;
@@ -10,5 +12,15 @@ export class AuthController {
 
   set accessToken(token: string) {
     this.#accessToken = token;
+    sessionStorage.setItem(ACCESS_TOKEN_KEY, token);
+  }
+
+  get isAuthenticated() {
+    return this.#accessToken.length > 0;
+  }
+
+  logout() {
+    this.#accessToken = '';
+    sessionStorage.removeItem(ACCESS_TOKEN_KEY);
   }
 }

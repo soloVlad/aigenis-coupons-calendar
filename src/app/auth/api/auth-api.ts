@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { inject, Service } from '@angular/core';
 import { Observable } from 'rxjs';
 import { LoginRequest, LoginResponse } from '../type/auth-api.types';
 
-@Injectable()
+@Service()
 export class AuthApi {
   readonly #httpClient = inject(HttpClient);
 

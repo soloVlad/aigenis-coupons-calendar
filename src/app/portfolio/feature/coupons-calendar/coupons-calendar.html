@@ -1,0 +1,104 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Coupon Calendar</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()">Logout</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+  @if (!loading() && !error() && allMonthGroups().length > 0) {
+    <ion-toolbar class="year-toolbar">
+      <ion-buttons slot="start">
+        <ion-button
+          fill="clear"
+          [disabled]="!canGoPrevious()"
+          (click)="previousYear()"
+        >
+          ‹
+        </ion-button>
+      </ion-buttons>
+
+      <ion-title class="year-title">
+        <ion-select
+          [value]="selectedYear()"
+          interface="popover"
+          (ionChange)="onYearChange($event)"
+        >
+          @for (year of availableYears(); track year) {
+            <ion-select-option [value]="year">{{ year }}</ion-select-option>
+          }
+        </ion-select>
+      </ion-title>
+
+      <ion-buttons slot="end">
+        <ion-button fill="clear" [disabled]="!canGoNext()" (click)="nextYear()">
+          ›
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  }
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
+    <ion-refresher-content />
+  </ion-refresher>
+
+  @if (loading()) {
+    <div class="state">
+      <ion-spinner name="crescent" />
+    </div>
+  } @else if (error()) {
+    <div class="state">
+      <p>{{ error() }}</p>
+    </div>
+  } @else if (allMonthGroups().length === 0) {
+    <div class="state">
+      <p>No upcoming coupon payments found.</p>
+    </div>
+  } @else if (visibleMonthGroups().length === 0) {
+    <div class="state">
+      <p>No coupon payments in {{ selectedYear() }}.</p>
+    </div>
+  } @else {
+    <div class="summary">
+      <p>
+        @if (isCurrentYear()) {
+          Estimated until end of {{ selectedYear() }}:
+        } @else {
+          Estimated for {{ selectedYear() }}:
+        }
+        <strong>{{ formatAmount(yearTotal()) }}</strong>
+      </p>
+      <ion-badge color="medium">Estimated</ion-badge>
+    </div>
+
+    @for (group of visibleMonthGroups(); track group.monthKey) {
+      <section class="month-group">
+        <div class="month-header">
+          <h2>{{ group.monthLabel }}</h2>
+          <span>{{ formatAmount(group.monthTotal, group.currency) }}</span>
+        </div>
+
+        <ion-list lines="full">
+          @for (event of group.events; track event.stateSecurityId + event.date) {
+            <ion-item>
+              <ion-label>
+                <h3>{{ event.bondSymbol }}</h3>
+                <p>{{ event.stateSecurityId }}</p>
+              </ion-label>
+              <ion-note slot="end">
+                <div>{{ formatDate(event.date) }}</div>
+                <div>
+                  {{ event.quantity }} x
+                  {{ formatAmount(event.amountPerBond, event.currency) }}
+                </div>
+                <strong>{{ formatAmount(event.totalAmount, event.currency) }}</strong>
+              </ion-note>
+            </ion-item>
+          }
+        </ion-list>
+      </section>
+    }
+  }
+</ion-content>

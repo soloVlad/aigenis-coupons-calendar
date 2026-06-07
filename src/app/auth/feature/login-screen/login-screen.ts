@@ -1,4 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { form, FormField, FormRoot } from '@angular/forms/signals';
 import { IonInput, IonButton } from '@ionic/angular/standalone';
 import { AuthApi } from '../../api/auth-api';
@@ -14,6 +15,7 @@ import { AuthController } from '../../util/auth-controller';
 export class LoginScreen {
   readonly #authApi = inject(AuthApi);
   readonly #authCtrl = inject(AuthController);
+  readonly #router = inject(Router);
 
   protected loginModel = signal<LoginRequest>({
     phone: '',
@@ -30,6 +32,7 @@ export class LoginScreen {
     this.#authApi.login(this.loginModel()).subscribe({
       next: (response) => {
         this.#authCtrl.accessToken = response.access;
+        this.#router.navigate(['/calendar']);
       },
     });
   }
