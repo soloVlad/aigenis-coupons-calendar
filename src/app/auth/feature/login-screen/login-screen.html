@@ -1,5 +1,44 @@
-<form [formRoot]="loginForm">
-  <ion-input [formField]="loginForm.phone" placeholder="Phone number" />
-  <ion-input [formField]="loginForm.password" placeholder="Password" />
-  <ion-button type="submit">Login</ion-button>
-</form>
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Sign in</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="login-content">
+  <form id="login-form" class="login-form" [formRoot]="loginForm">
+    <section class="login-fields">
+      <ion-input
+        type="tel"
+        inputmode="tel"
+        label="Phone number"
+        labelPlacement="stacked"
+        fill="outline"
+        [formField]="loginForm.phone"
+        placeholder="Phone number"
+      />
+      <ion-input
+        type="password"
+        label="Password"
+        labelPlacement="stacked"
+        fill="outline"
+        [formField]="loginForm.password"
+        placeholder="Password"
+      >
+        <ion-input-password-toggle slot="end" />
+      </ion-input>
+    </section>
+  </form>
+</ion-content>
+
+<ion-footer class="login-footer">
+  <ion-toolbar>
+    <ion-button
+      class="login-submit"
+      expand="block"
+      type="submit"
+      form="login-form"
+    >
+      Login
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

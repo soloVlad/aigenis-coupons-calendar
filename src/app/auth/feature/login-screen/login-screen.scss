@@ -1,0 +1,33 @@
+.login-content {
+  flex: 1;
+  --padding-start: 1rem;
+  --padding-end: 1rem;
+  --overflow: hidden;
+}
+
+.login-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-top: 1rem;
+}
+
+.login-footer {
+  box-shadow: none;
+
+  ion-toolbar {
+    --background: var(--ion-background-color);
+    --border-width: 0;
+    --min-height: 0;
+    --padding-top: 0.75rem;
+    --padding-bottom: calc(0.75rem + env(safe-area-inset-bottom));
+    --padding-start: 1rem;
+    --padding-end: 1rem;
+  }
+}
+
+.login-submit {
+  margin: 0;
+  text-transform: none;
+  font-weight: 600;
+}
