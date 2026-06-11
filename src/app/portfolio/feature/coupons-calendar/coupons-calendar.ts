@@ -1,5 +1,6 @@
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
+import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 import {
   IonBadge,
   IonButton,
@@ -18,6 +19,7 @@ import {
   IonToolbar,
 } from '@ionic/angular/standalone';
 import { AuthController } from '../../../auth/util/auth-controller';
+import { getIntlLocale, LanguageToggle, LocaleService } from '../../../language';
 import { PortfolioApi } from '../../api/portfolio-api';
 import { CashflowKind, MonthGroup } from '../../type';
 import { CouponScheduleService } from '../../util/coupon-schedule-service';
@@ -44,6 +46,8 @@ import { PortfolioController } from '../../util/portfolio-controller';
     IonList,
     IonItem,
     IonBadge,
+    TranslocoPipe,
+    LanguageToggle,
   ],
 })
 export class CouponsCalendar implements OnInit {
@@ -52,6 +56,8 @@ export class CouponsCalendar implements OnInit {
   readonly #couponSchedule = inject(CouponScheduleService);
   readonly #authCtrl = inject(AuthController);
   readonly #router = inject(Router);
+  readonly #transloco = inject(TranslocoService);
+  readonly #locale = inject(LocaleService);
 
   protected readonly loading = this.#portfolioCtrl.loading;
   protected readonly error = this.#portfolioCtrl.error;
@@ -62,12 +68,15 @@ export class CouponsCalendar implements OnInit {
     this.#couponSchedule.getAvailableYears(this.allMonthGroups()),
   );
 
-  protected readonly visibleMonthGroups = computed(() =>
-    this.#couponSchedule.filterMonthGroupsByYear(
+  protected readonly visibleMonthGroups = computed(() => {
+    const locale = this.#locale.activeLang();
+
+    return this.#couponSchedule.filterMonthGroupsByYear(
       this.allMonthGroups(),
       this.selectedYear(),
-    ),
-  );
+      { locale },
+    );
+  });
 
   protected readonly yearTotals = computed(() =>
     this.#couponSchedule.getYearTotals(
@@ -136,14 +145,19 @@ export class CouponsCalendar implements OnInit {
   }
 
   protected formatDate(date: string): string {
-    return new Date(`${date}T00:00:00`).toLocaleDateString('ru-BY', {
-      day: 'numeric',
-      month: 'long',
-    });
+    return new Date(`${date}T00:00:00`).toLocaleDateString(
+      getIntlLocale(this.#locale.activeLang()),
+      {
+        day: 'numeric',
+        month: 'long',
+      },
+    );
   }
 
   protected formatEventKind(kind: CashflowKind): string {
-    return kind === 'coupon' ? 'Купон' : 'Погашение номинала';
+    return this.#transloco.translate(
+      kind === 'coupon' ? 'eventKind.coupon' : 'eventKind.nominal',
+    );
   }
 
   #loadHoldings(onComplete?: () => void): void {
@@ -160,7 +174,9 @@ export class CouponsCalendar implements OnInit {
         onComplete?.();
       },
       error: () => {
-        this.#portfolioCtrl.error.set('Failed to load bond holdings.');
+        this.#portfolioCtrl.error.set(
+          this.#transloco.translate('errors.loadHoldings'),
+        );
         this.#portfolioCtrl.loading.set(false);
         onComplete?.();
       },

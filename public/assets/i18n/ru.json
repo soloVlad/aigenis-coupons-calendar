@@ -1,0 +1,26 @@
+{
+  "common": {
+    "language": "Сменить язык",
+    "logout": "Выйти"
+  },
+  "login": {
+    "title": "Вход",
+    "phone": "Номер телефона",
+    "password": "Пароль",
+    "submit": "Войти"
+  },
+  "calendar": {
+    "title": "Календарь выплат",
+    "payoutsUntilEnd": "Выплаты до конца {{year}}",
+    "payoutsFor": "Выплаты за {{year}}",
+    "noUpcoming": "Предстоящие выплаты не найдены.",
+    "noPayoutsInYear": "Нет выплат в {{year}}."
+  },
+  "eventKind": {
+    "coupon": "Купон",
+    "nominal": "Погашение номинала"
+  },
+  "errors": {
+    "loadHoldings": "Не удалось загрузить облигации."
+  }
+}

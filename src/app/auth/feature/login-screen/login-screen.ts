@@ -1,8 +1,10 @@
 import { Component, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { form, FormField, FormRoot } from '@angular/forms/signals';
+import { TranslocoPipe } from '@jsverse/transloco';
 import {
   IonButton,
+  IonButtons,
   IonContent,
   IonFooter,
   IonHeader,
@@ -11,6 +13,7 @@ import {
   IonTitle,
   IonToolbar,
 } from '@ionic/angular/standalone';
+import { LanguageToggle } from '../../../language';
 import { AuthApi } from '../../api/auth-api';
 import { LoginRequest } from '../../type';
 import { AuthController } from '../../util/auth-controller';
@@ -24,6 +27,7 @@ import { AuthController } from '../../util/auth-controller';
     IonHeader,
     IonToolbar,
     IonTitle,
+    IonButtons,
     IonContent,
     IonFooter,
     IonInput,
@@ -31,6 +35,8 @@ import { AuthController } from '../../util/auth-controller';
     FormRoot,
     FormField,
     IonButton,
+    TranslocoPipe,
+    LanguageToggle,
   ],
 })
 export class LoginScreen {

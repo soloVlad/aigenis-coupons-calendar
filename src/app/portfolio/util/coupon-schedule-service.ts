@@ -7,7 +7,7 @@ import {
   parse,
   parseISO,
 } from 'date-fns';
-import { ru } from 'date-fns/locale';
+import { AppLocale, getDateFnsLocale } from '../../language';
 import { round } from '../../misc';
 import { CouponEvent, MonthGroup, UserSecurity, YearTotals } from '../type';
 
@@ -59,7 +59,7 @@ export class CouponScheduleService {
   filterMonthGroupsByYear(
     monthGroups: MonthGroup[],
     year: number,
-    options?: { remainingOnly?: boolean },
+    options?: { remainingOnly?: boolean; locale?: AppLocale },
   ): MonthGroup[] {
     const prefix = `${year}-`;
     const todayStr = format(new Date(), DATE_FORMAT);
@@ -75,7 +75,10 @@ export class CouponScheduleService {
 
         return {
           ...group,
-          monthLabel: this.#formatMonthOnly(group.monthKey),
+          monthLabel: this.#formatMonthOnly(
+            group.monthKey,
+            options?.locale ?? 'en',
+          ),
           events,
           monthTotal: round(
             events.reduce((sum, event) => sum + event.totalAmount, 0),
@@ -123,10 +126,10 @@ export class CouponScheduleService {
       .filter((event) => !isCurrentYear || event.date >= todayStr);
   }
 
-  #formatMonthOnly(monthKey: string): string {
+  #formatMonthOnly(monthKey: string, locale: AppLocale): string {
     const date = parse(`${monthKey}-01`, DATE_FORMAT, new Date());
 
-    return format(date, 'LLLL', { locale: ru });
+    return format(date, 'LLLL', { locale: getDateFnsLocale(locale) });
   }
 
   #buildCouponEvents(holding: UserSecurity): CouponEvent[] {
@@ -233,6 +236,8 @@ export class CouponScheduleService {
   }
 
   #formatMonthLabel(date: string): string {
-    return format(parseISO(date), 'LLLL yyyy', { locale: ru });
+    return format(parseISO(date), 'LLLL yyyy', {
+      locale: getDateFnsLocale('en'),
+    });
   }
 }

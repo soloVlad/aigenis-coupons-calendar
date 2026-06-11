@@ -1,6 +1,9 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Sign in</ion-title>
+    <ion-title>{{ 'login.title' | transloco }}</ion-title>
+    <ion-buttons slot="end">
+      <app-language-toggle />
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -10,19 +13,19 @@
       <ion-input
         type="tel"
         inputmode="tel"
-        label="Phone number"
+        [label]="'login.phone' | transloco"
         labelPlacement="stacked"
         fill="outline"
         [formField]="loginForm.phone"
-        placeholder="Phone number"
+        [placeholder]="'login.phone' | transloco"
       />
       <ion-input
         type="password"
-        label="Password"
+        [label]="'login.password' | transloco"
         labelPlacement="stacked"
         fill="outline"
         [formField]="loginForm.password"
-        placeholder="Password"
+        [placeholder]="'login.password' | transloco"
       >
         <ion-input-password-toggle slot="end" />
       </ion-input>
@@ -40,7 +43,7 @@
       type="submit"
       form="login-form"
     >
-      Login
+      {{ 'login.submit' | transloco }}
     </ion-button>
   </ion-toolbar>
 </ion-footer>

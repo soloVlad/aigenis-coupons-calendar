@@ -1,0 +1,26 @@
+{
+  "common": {
+    "language": "Change language",
+    "logout": "Logout"
+  },
+  "login": {
+    "title": "Sign in",
+    "phone": "Phone number",
+    "password": "Password",
+    "submit": "Sign in"
+  },
+  "calendar": {
+    "title": "Coupon Calendar",
+    "payoutsUntilEnd": "Payouts until end of {{year}}",
+    "payoutsFor": "Payouts for {{year}}",
+    "noUpcoming": "No upcoming payouts found.",
+    "noPayoutsInYear": "No payouts in {{year}}."
+  },
+  "eventKind": {
+    "coupon": "Coupon",
+    "nominal": "Nominal redemption"
+  },
+  "errors": {
+    "loadHoldings": "Failed to load bond holdings."
+  }
+}

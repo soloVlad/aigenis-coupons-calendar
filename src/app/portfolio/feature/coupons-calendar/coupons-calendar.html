@@ -1,8 +1,13 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Coupon Calendar</ion-title>
+    <ion-title>{{ 'calendar.title' | transloco }}</ion-title>
     <ion-buttons slot="end">
-      <ion-button fill="clear" aria-label="Logout" (click)="logout()">
+      <app-language-toggle />
+      <ion-button
+        fill="clear"
+        [attr.aria-label]="'common.logout' | transloco"
+        (click)="logout()"
+      >
         <ion-icon slot="icon-only" name="log-out-outline" />
       </ion-button>
     </ion-buttons>
@@ -44,9 +49,12 @@
         <div class="summary-row summary-row--total">
           <span class="summary-row__label">
             @if (isCurrentYear()) {
-              Payouts until end of {{ selectedYear() }}
+              {{
+                'calendar.payoutsUntilEnd'
+                  | transloco: { year: selectedYear() }
+              }}
             } @else {
-              Payouts for {{ selectedYear() }}
+              {{ 'calendar.payoutsFor' | transloco: { year: selectedYear() } }}
             }
           </span>
           <span class="summary-row__value">
@@ -94,11 +102,13 @@
     </div>
   } @else if (allMonthGroups().length === 0) {
     <div class="state">
-      <p>No upcoming payouts found.</p>
+      <p>{{ 'calendar.noUpcoming' | transloco }}</p>
     </div>
   } @else if (visibleMonthGroups().length === 0) {
     <div class="state">
-      <p>No payouts in {{ selectedYear() }}.</p>
+      <p>
+        {{ 'calendar.noPayoutsInYear' | transloco: { year: selectedYear() } }}
+      </p>
     </div>
   } @else {
     @for (group of visibleMonthGroups(); track group.monthKey) {
