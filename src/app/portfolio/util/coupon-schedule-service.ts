@@ -19,9 +19,10 @@ export class CouponScheduleService {
     const bondHoldings = holdings.filter(
       (holding) => holding.definition.product === 'bond',
     );
-    const events = bondHoldings.flatMap((holding) =>
-      this.#buildCouponEvents(holding),
-    );
+    const events = bondHoldings.flatMap((holding) => [
+      ...this.#buildCouponEvents(holding),
+      ...this.#buildNominalEvent(holding),
+    ]);
 
     const groups = new Map<string, MonthGroup>();
 
@@ -47,7 +48,9 @@ export class CouponScheduleService {
     return [...groups.values()]
       .map((group) => ({
         ...group,
-        events: [...group.events].sort((a, b) => a.date.localeCompare(b.date)),
+        events: [...group.events].sort((a, b) =>
+          a.date.localeCompare(b.date) || a.kind.localeCompare(b.kind),
+        ),
         monthTotal: round(group.monthTotal),
       }))
       .sort((a, b) => a.monthKey.localeCompare(b.monthKey));
@@ -141,6 +144,7 @@ export class CouponScheduleService {
         : this.#projectCouponDates(nextDate, maturityDate, periodDays);
 
     return dates.map((date) => ({
+      kind: 'coupon' as const,
       date,
       bondSymbol: definition.parent_symbol,
       stateSecurityId: definition.state_security_id,
@@ -150,6 +154,29 @@ export class CouponScheduleService {
       currency: definition.currency,
       isEstimated: true as const,
     }));
+  }
+
+  #buildNominalEvent(holding: UserSecurity): CouponEvent[] {
+    const { definition, amount: quantity } = holding;
+    const maturityDate = definition.maturity_date;
+
+    if (!maturityDate || quantity <= 0 || definition.nominal <= 0) {
+      return [];
+    }
+
+    return [
+      {
+        kind: 'nominal' as const,
+        date: maturityDate,
+        bondSymbol: definition.parent_symbol,
+        stateSecurityId: definition.state_security_id,
+        quantity,
+        amountPerBond: definition.nominal,
+        totalAmount: round(definition.nominal * quantity),
+        currency: definition.currency,
+        isEstimated: true as const,
+      },
+    ];
   }
 
   #projectCouponDates(

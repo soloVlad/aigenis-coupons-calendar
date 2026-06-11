@@ -20,7 +20,7 @@ import {
 } from '@ionic/angular/standalone';
 import { AuthController } from '../../../auth/util/auth-controller';
 import { PortfolioApi } from '../../api/portfolio-api';
-import { MonthGroup } from '../../type';
+import { CashflowKind, MonthGroup } from '../../type';
 import { CouponScheduleService } from '../../util/coupon-schedule-service';
 import { PortfolioController } from '../../util/portfolio-controller';
 
@@ -141,6 +141,10 @@ export class CouponsCalendar implements OnInit {
       day: 'numeric',
       month: 'short',
     });
+  }
+
+  protected formatEventKind(kind: CashflowKind): string {
+    return kind === 'coupon' ? 'Купон' : 'Погашение номинала';
   }
 
   #loadHoldings(onComplete?: () => void): void {

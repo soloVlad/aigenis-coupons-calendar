@@ -54,19 +54,19 @@
     </div>
   } @else if (allMonthGroups().length === 0) {
     <div class="state">
-      <p>No upcoming coupon payments found.</p>
+      <p>No upcoming payouts found.</p>
     </div>
   } @else if (visibleMonthGroups().length === 0) {
     <div class="state">
-      <p>No coupon payments in {{ selectedYear() }}.</p>
+      <p>No payouts in {{ selectedYear() }}.</p>
     </div>
   } @else {
     <div class="summary">
       <p>
         @if (isCurrentYear()) {
-          Estimated until end of {{ selectedYear() }}:
+          Estimated payouts until end of {{ selectedYear() }}:
         } @else {
-          Estimated for {{ selectedYear() }}:
+          Estimated payouts for {{ selectedYear() }}:
         }
         <strong>{{ formatAmount(yearTotal()) }}</strong>
       </p>
@@ -81,11 +81,17 @@
         </div>
 
         <ion-list lines="full">
-          @for (event of group.events; track event.stateSecurityId + event.date) {
+          @for (
+            event of group.events;
+            track event.stateSecurityId + event.date + event.kind
+          ) {
             <ion-item>
               <ion-label>
                 <h3>{{ event.bondSymbol }}</h3>
                 <p>{{ event.stateSecurityId }}</p>
+                <ion-badge [color]="event.kind === 'nominal' ? 'primary' : 'medium'">
+                  {{ formatEventKind(event.kind) }}
+                </ion-badge>
               </ion-label>
               <ion-note slot="end">
                 <div>{{ formatDate(event.date) }}</div>

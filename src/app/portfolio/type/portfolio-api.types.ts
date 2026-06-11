@@ -29,7 +29,10 @@ export type UserSecurity = {
   definition: SecurityDefinition;
 };
 
+export type CashflowKind = 'coupon' | 'nominal';
+
 export type CouponEvent = {
+  kind: CashflowKind;
   date: string;
   bondSymbol: string;
   stateSecurityId: string;
