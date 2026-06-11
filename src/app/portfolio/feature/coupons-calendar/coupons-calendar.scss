@@ -7,10 +7,14 @@
   text-align: center;
 }
 
+.calendar-content {
+  --padding-bottom: calc(1rem + env(safe-area-inset-bottom));
+}
+
 .summary-toolbar {
-  --min-height: 0;
+  --min-height: auto;
   --padding-top: 0;
-  --padding-bottom: 1rem;
+  --padding-bottom: 0.75rem;
   --padding-start: 1rem;
   --padding-end: 1rem;
 }
@@ -87,6 +91,10 @@
 
 .month-group {
   margin-bottom: 1rem;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
 }
 
 .month-header {

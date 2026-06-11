@@ -25,6 +25,7 @@ import { PortfolioController } from '../../util/portfolio-controller';
 
 @Component({
   selector: 'app-coupons-calendar',
+  host: { class: 'ion-page' },
   templateUrl: './coupons-calendar.html',
   styleUrls: ['./coupons-calendar.scss'],
   imports: [
