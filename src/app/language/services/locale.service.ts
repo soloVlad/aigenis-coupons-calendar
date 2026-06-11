@@ -2,11 +2,7 @@ import { inject, Service, signal } from '@angular/core';
 import { TranslocoService } from '@jsverse/transloco';
 import { firstValueFrom } from 'rxjs';
 import { AppLocale } from '../type';
-import {
-  resolveInitialLocale,
-  storeLocale,
-  toggleLocale as toggleLocaleUtil,
-} from '../util';
+import { resolveInitialLocale, storeLocale, toggleLocale as toggleLocaleUtil } from '../util';
 
 @Service()
 export class LocaleService {

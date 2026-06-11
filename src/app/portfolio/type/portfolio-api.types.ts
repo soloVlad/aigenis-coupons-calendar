@@ -1,13 +1,13 @@
-export type PaginatedResponse<T> = {
+export interface PaginatedResponse<T> {
   pagination: {
     count: number;
     next: number | null;
     previous: number | null;
   };
   results: T[];
-};
+}
 
-export type SecurityDefinition = {
+export interface SecurityDefinition {
   id: number;
   parent_symbol: string;
   state_security_id: string;
@@ -21,17 +21,17 @@ export type SecurityDefinition = {
   next_coupon_date: string | null;
   coupon_payment_date: string | null;
   maturity_date: string;
-};
+}
 
-export type UserSecurity = {
+export interface UserSecurity {
   id: number;
   amount: number;
   definition: SecurityDefinition;
-};
+}
 
 export type CashflowKind = 'coupon' | 'nominal';
 
-export type CouponEvent = {
+export interface CouponEvent {
   kind: CashflowKind;
   date: string;
   bondSymbol: string;
@@ -41,18 +41,18 @@ export type CouponEvent = {
   totalAmount: number;
   currency: string;
   isEstimated: true;
-};
+}
 
-export type MonthGroup = {
+export interface MonthGroup {
   monthKey: string;
   monthLabel: string;
   events: CouponEvent[];
   monthTotal: number;
   currency: string;
-};
+}
 
-export type YearTotals = {
+export interface YearTotals {
   total: number;
   coupons: number;
   nominal: number;
-};
+}

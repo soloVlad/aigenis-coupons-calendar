@@ -11,11 +11,7 @@ import { provideTransloco } from '@jsverse/transloco';
 import { routes } from './app.routes';
 import { provideIonicAngular } from '@ionic/angular/standalone';
 import { authInterceptor } from './auth';
-import {
-  AVAILABLE_LOCALES,
-  LocaleService,
-  TranslocoHttpLoader,
-} from './language';
+import { AVAILABLE_LOCALES, LocaleService, TranslocoHttpLoader } from './language';
 
 export const appConfig: ApplicationConfig = {
   providers: [

@@ -3,11 +3,7 @@
     <ion-title>{{ 'calendar.title' | transloco }}</ion-title>
     <ion-buttons slot="end">
       <app-language-toggle />
-      <ion-button
-        fill="clear"
-        [attr.aria-label]="'common.logout' | transloco"
-        (click)="logout()"
-      >
+      <ion-button fill="clear" [attr.aria-label]="'common.logout' | transloco" (click)="logout()">
         <ion-icon slot="icon-only" name="log-out-outline" />
       </ion-button>
     </ion-buttons>
@@ -16,21 +12,13 @@
   @if (!loading() && !error() && allMonthGroups().length > 0) {
     <ion-toolbar class="year-toolbar">
       <ion-buttons slot="start">
-        <ion-button
-          fill="clear"
-          [disabled]="!canGoPrevious()"
-          (click)="previousYear()"
-        >
+        <ion-button fill="clear" [disabled]="!canGoPrevious()" (click)="previousYear()">
           ‹
         </ion-button>
       </ion-buttons>
 
       <ion-title class="year-title">
-        <ion-select
-          [value]="selectedYear()"
-          interface="popover"
-          (ionChange)="onYearChange($event)"
-        >
+        <ion-select [value]="selectedYear()" interface="popover" (ionChange)="onYearChange($event)">
           @for (year of availableYears(); track year) {
             <ion-select-option [value]="year">{{ year }}</ion-select-option>
           }
@@ -38,9 +26,7 @@
       </ion-title>
 
       <ion-buttons slot="end">
-        <ion-button fill="clear" [disabled]="!canGoNext()" (click)="nextYear()">
-          ›
-        </ion-button>
+        <ion-button fill="clear" [disabled]="!canGoNext()" (click)="nextYear()"> › </ion-button>
       </ion-buttons>
     </ion-toolbar>
 
@@ -49,10 +35,7 @@
         <div class="summary-row summary-row--total">
           <span class="summary-row__label">
             @if (isCurrentYear()) {
-              {{
-                'calendar.payoutsUntilEnd'
-                  | transloco: { year: selectedYear() }
-              }}
+              {{ 'calendar.payoutsUntilEnd' | transloco: { year: selectedYear() } }}
             } @else {
               {{ 'calendar.payoutsFor' | transloco: { year: selectedYear() } }}
             }
@@ -64,9 +47,7 @@
         </div>
 
         <div class="summary-row">
-          <span class="summary-row__label">{{
-            formatEventKind('coupon')
-          }}</span>
+          <span class="summary-row__label">{{ formatEventKind('coupon') }}</span>
           <span class="summary-row__value">
             <span class="summary-approx" aria-hidden="true">≈</span>
             {{ formatAmount(yearTotals().coupons) }}
@@ -74,9 +55,7 @@
         </div>
 
         <div class="summary-row">
-          <span class="summary-row__label">{{
-            formatEventKind('nominal')
-          }}</span>
+          <span class="summary-row__label">{{ formatEventKind('nominal') }}</span>
           <span class="summary-row__value">
             <span class="summary-approx" aria-hidden="true">≈</span>
             {{ formatAmount(yearTotals().nominal) }}
@@ -119,10 +98,7 @@
         </div>
 
         <ion-list lines="full">
-          @for (
-            event of group.events;
-            track event.stateSecurityId + event.date + event.kind
-          ) {
+          @for (event of group.events; track event.stateSecurityId + event.date + event.kind) {
             <ion-item class="payout-item" lines="full">
               <div class="payout-item__content">
                 <div class="payout-item__row payout-item__row--primary">
@@ -134,9 +110,7 @@
                 <div class="payout-item__row payout-item__row--secondary">
                   <div class="payout-item__bond">
                     <span class="payout-title">{{ event.bondSymbol }}</span>
-                    <ion-badge
-                      [color]="event.kind === 'nominal' ? 'primary' : 'medium'"
-                    >
+                    <ion-badge [color]="event.kind === 'nominal' ? 'primary' : 'medium'">
                       {{ formatEventKind(event.kind) }}
                     </ion-badge>
                   </div>

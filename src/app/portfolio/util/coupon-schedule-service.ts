@@ -1,12 +1,5 @@
 import { Service } from '@angular/core';
-import {
-  addDays,
-  differenceInDays,
-  format,
-  getYear,
-  parse,
-  parseISO,
-} from 'date-fns';
+import { addDays, differenceInDays, format, getYear, parse, parseISO } from 'date-fns';
 import { AppLocale, getDateFnsLocale } from '../../language';
 import { round } from '../../misc';
 import { CouponEvent, MonthGroup, UserSecurity, YearTotals } from '../type';
@@ -16,9 +9,7 @@ const DATE_FORMAT = 'yyyy-MM-dd';
 @Service()
 export class CouponScheduleService {
   buildMonthGroups(holdings: UserSecurity[]): MonthGroup[] {
-    const bondHoldings = holdings.filter(
-      (holding) => holding.definition.product === 'bond',
-    );
+    const bondHoldings = holdings.filter((holding) => holding.definition.product === 'bond');
     const events = bondHoldings.flatMap((holding) => [
       ...this.#buildCouponEvents(holding),
       ...this.#buildNominalEvent(holding),
@@ -48,8 +39,8 @@ export class CouponScheduleService {
     return [...groups.values()]
       .map((group) => ({
         ...group,
-        events: [...group.events].sort((a, b) =>
-          a.date.localeCompare(b.date) || a.kind.localeCompare(b.kind),
+        events: [...group.events].sort(
+          (a, b) => a.date.localeCompare(b.date) || a.kind.localeCompare(b.kind),
         ),
         monthTotal: round(group.monthTotal),
       }))
@@ -63,8 +54,7 @@ export class CouponScheduleService {
   ): MonthGroup[] {
     const prefix = `${year}-`;
     const todayStr = format(new Date(), DATE_FORMAT);
-    const remainingOnly =
-      options?.remainingOnly ?? year === getYear(new Date());
+    const remainingOnly = options?.remainingOnly ?? year === getYear(new Date());
 
     return monthGroups
       .filter((group) => group.monthKey.startsWith(prefix))
@@ -75,23 +65,16 @@ export class CouponScheduleService {
 
         return {
           ...group,
-          monthLabel: this.#formatMonthOnly(
-            group.monthKey,
-            options?.locale ?? 'en',
-          ),
+          monthLabel: this.#formatMonthOnly(group.monthKey, options?.locale ?? 'en'),
           events,
-          monthTotal: round(
-            events.reduce((sum, event) => sum + event.totalAmount, 0),
-          ),
+          monthTotal: round(events.reduce((sum, event) => sum + event.totalAmount, 0)),
         };
       })
       .filter((group) => group.events.length > 0);
   }
 
   getAvailableYears(monthGroups: MonthGroup[]): number[] {
-    const years = new Set(
-      monthGroups.map((group) => Number(group.monthKey.slice(0, 4))),
-    );
+    const years = new Set(monthGroups.map((group) => Number(group.monthKey.slice(0, 4))));
 
     return [...years].sort((a, b) => a - b);
   }
@@ -134,8 +117,7 @@ export class CouponScheduleService {
 
   #buildCouponEvents(holding: UserSecurity): CouponEvent[] {
     const { definition, amount: quantity } = holding;
-    const nextDate =
-      definition.next_coupon_date ?? definition.coupon_payment_date;
+    const nextDate = definition.next_coupon_date ?? definition.coupon_payment_date;
     const maturityDate = definition.maturity_date;
 
     if (!nextDate || !maturityDate || quantity <= 0) {
@@ -143,19 +125,14 @@ export class CouponScheduleService {
     }
 
     const periodStart = definition.last_coupon_date ?? definition.issue_date;
-    const periodDays = differenceInDays(
-      parseISO(nextDate),
-      parseISO(periodStart),
-    );
+    const periodDays = differenceInDays(parseISO(nextDate), parseISO(periodStart));
 
     if (periodDays <= 0) {
       return [];
     }
 
     const amountPerBond = round(
-      definition.nominal *
-        (definition.coupon_rate / 100) *
-        (periodDays / 365),
+      definition.nominal * (definition.coupon_rate / 100) * (periodDays / 365),
     );
 
     const dates =
@@ -199,11 +176,7 @@ export class CouponScheduleService {
     ];
   }
 
-  #projectCouponDates(
-    nextDate: string,
-    maturityDate: string,
-    periodDays: number,
-  ): string[] {
+  #projectCouponDates(nextDate: string, maturityDate: string, periodDays: number): string[] {
     const dates: string[] = [];
     let current = nextDate;
 
@@ -214,10 +187,7 @@ export class CouponScheduleService {
         break;
       }
 
-      const upcoming = format(
-        addDays(parseISO(current), periodDays),
-        DATE_FORMAT,
-      );
+      const upcoming = format(addDays(parseISO(current), periodDays), DATE_FORMAT);
       if (upcoming <= current) {
         break;
       }

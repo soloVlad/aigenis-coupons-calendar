@@ -79,10 +79,7 @@ export class CouponsCalendar implements OnInit {
   });
 
   protected readonly yearTotals = computed(() =>
-    this.#couponSchedule.getYearTotals(
-      this.allMonthGroups(),
-      this.selectedYear(),
-    ),
+    this.#couponSchedule.getYearTotals(this.allMonthGroups(), this.selectedYear()),
   );
 
   protected readonly currency = computed(
@@ -155,9 +152,7 @@ export class CouponsCalendar implements OnInit {
   }
 
   protected formatEventKind(kind: CashflowKind): string {
-    return this.#transloco.translate(
-      kind === 'coupon' ? 'eventKind.coupon' : 'eventKind.nominal',
-    );
+    return this.#transloco.translate(kind === 'coupon' ? 'eventKind.coupon' : 'eventKind.nominal');
   }
 
   #loadHoldings(onComplete?: () => void): void {
@@ -174,9 +169,7 @@ export class CouponsCalendar implements OnInit {
         onComplete?.();
       },
       error: () => {
-        this.#portfolioCtrl.error.set(
-          this.#transloco.translate('errors.loadHoldings'),
-        );
+        this.#portfolioCtrl.error.set(this.#transloco.translate('errors.loadHoldings'));
         this.#portfolioCtrl.loading.set(false);
         onComplete?.();
       },

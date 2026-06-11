@@ -3,7 +3,7 @@
   "version": 1,
   "cli": {
     "packageManager": "pnpm",
-    "schematicCollections": ["@ionic/angular-toolkit"]
+    "schematicCollections": ["angular-eslint", "@ionic/angular-toolkit"]
   },
   "newProjectRoot": "projects",
   "projects": {
@@ -150,6 +150,12 @@
             "production": {
               "browserTarget": "aigenis-coupons-calendar:build:production"
             }
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
           }
         }
       }
