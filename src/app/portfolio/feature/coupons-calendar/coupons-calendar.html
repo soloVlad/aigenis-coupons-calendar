@@ -2,7 +2,9 @@
   <ion-toolbar>
     <ion-title>Coupon Calendar</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="logout()">Logout</ion-button>
+      <ion-button fill="clear" aria-label="Logout" (click)="logout()">
+        <ion-icon slot="icon-only" name="log-out-outline" />
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 
