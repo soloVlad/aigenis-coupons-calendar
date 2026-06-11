@@ -61,29 +61,41 @@
       <p>No payouts in {{ selectedYear() }}.</p>
     </div>
   } @else {
-    <div class="summary">
-      <div class="summary-main">
-        <p class="summary-total">
+    <section class="summary">
+      <div class="summary-row summary-row--total">
+        <span class="summary-row__label">
           @if (isCurrentYear()) {
-            Estimated payouts until end of {{ selectedYear() }}:
+            Payouts until end of {{ selectedYear() }}
           } @else {
-            Estimated payouts for {{ selectedYear() }}:
+            Payouts for {{ selectedYear() }}
           }
-          <strong>{{ formatAmount(yearTotals().total) }}</strong>
-        </p>
-        <dl class="summary-breakdown">
-          <div>
-            <dt>{{ formatEventKind('coupon') }}</dt>
-            <dd>{{ formatAmount(yearTotals().coupons) }}</dd>
-          </div>
-          <div>
-            <dt>{{ formatEventKind('nominal') }}</dt>
-            <dd>{{ formatAmount(yearTotals().nominal) }}</dd>
-          </div>
-        </dl>
+        </span>
+        <span class="summary-row__value">
+          <span class="summary-approx" aria-hidden="true">≈</span>
+          {{ formatAmount(yearTotals().total) }}
+        </span>
       </div>
-      <ion-badge color="medium">Estimated</ion-badge>
-    </div>
+
+      <div class="summary-row">
+        <span class="summary-row__label">{{
+          formatEventKind('coupon')
+        }}</span>
+        <span class="summary-row__value">
+          <span class="summary-approx" aria-hidden="true">≈</span>
+          {{ formatAmount(yearTotals().coupons) }}
+        </span>
+      </div>
+
+      <div class="summary-row">
+        <span class="summary-row__label">{{
+          formatEventKind('nominal')
+        }}</span>
+        <span class="summary-row__value">
+          <span class="summary-approx" aria-hidden="true">≈</span>
+          {{ formatAmount(yearTotals().nominal) }}
+        </span>
+      </div>
+    </section>
 
     @for (group of visibleMonthGroups(); track group.monthKey) {
       <section class="month-group">
