@@ -62,14 +62,26 @@
     </div>
   } @else {
     <div class="summary">
-      <p>
-        @if (isCurrentYear()) {
-          Estimated payouts until end of {{ selectedYear() }}:
-        } @else {
-          Estimated payouts for {{ selectedYear() }}:
-        }
-        <strong>{{ formatAmount(yearTotal()) }}</strong>
-      </p>
+      <div class="summary-main">
+        <p class="summary-total">
+          @if (isCurrentYear()) {
+            Estimated payouts until end of {{ selectedYear() }}:
+          } @else {
+            Estimated payouts for {{ selectedYear() }}:
+          }
+          <strong>{{ formatAmount(yearTotals().total) }}</strong>
+        </p>
+        <dl class="summary-breakdown">
+          <div>
+            <dt>{{ formatEventKind('coupon') }}</dt>
+            <dd>{{ formatAmount(yearTotals().coupons) }}</dd>
+          </div>
+          <div>
+            <dt>{{ formatEventKind('nominal') }}</dt>
+            <dd>{{ formatAmount(yearTotals().nominal) }}</dd>
+          </div>
+        </dl>
+      </div>
       <ion-badge color="medium">Estimated</ion-badge>
     </div>
 

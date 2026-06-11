@@ -70,8 +70,8 @@ export class CouponsCalendar implements OnInit {
     ),
   );
 
-  protected readonly yearTotal = computed(() =>
-    this.#couponSchedule.getYearTotal(
+  protected readonly yearTotals = computed(() =>
+    this.#couponSchedule.getYearTotals(
       this.allMonthGroups(),
       this.selectedYear(),
     ),

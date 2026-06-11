@@ -50,3 +50,9 @@ export type MonthGroup = {
   monthTotal: number;
   currency: string;
 };
+
+export type YearTotals = {
+  total: number;
+  coupons: number;
+  nominal: number;
+};

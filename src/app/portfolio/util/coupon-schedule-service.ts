@@ -9,7 +9,7 @@ import {
 } from 'date-fns';
 import { ru } from 'date-fns/locale';
 import { round } from '../../misc';
-import { CouponEvent, MonthGroup, UserSecurity } from '../type';
+import { CouponEvent, MonthGroup, UserSecurity, YearTotals } from '../type';
 
 const DATE_FORMAT = 'yyyy-MM-dd';
 
@@ -93,17 +93,34 @@ export class CouponScheduleService {
     return [...years].sort((a, b) => a - b);
   }
 
-  getYearTotal(monthGroups: MonthGroup[], year: number): number {
+  getYearTotals(monthGroups: MonthGroup[], year: number): YearTotals {
+    const events = this.#getYearEvents(monthGroups, year);
+    const coupons = round(
+      events
+        .filter((event) => event.kind === 'coupon')
+        .reduce((sum, event) => sum + event.totalAmount, 0),
+    );
+    const nominal = round(
+      events
+        .filter((event) => event.kind === 'nominal')
+        .reduce((sum, event) => sum + event.totalAmount, 0),
+    );
+
+    return {
+      total: round(coupons + nominal),
+      coupons,
+      nominal,
+    };
+  }
+
+  #getYearEvents(monthGroups: MonthGroup[], year: number): CouponEvent[] {
     const todayStr = format(new Date(), DATE_FORMAT);
     const isCurrentYear = year === getYear(new Date());
 
-    return round(
-      monthGroups
-        .flatMap((group) => group.events)
-        .filter((event) => event.date.startsWith(`${year}-`))
-        .filter((event) => !isCurrentYear || event.date >= todayStr)
-        .reduce((sum, event) => sum + event.totalAmount, 0),
-    );
+    return monthGroups
+      .flatMap((group) => group.events)
+      .filter((event) => event.date.startsWith(`${year}-`))
+      .filter((event) => !isCurrentYear || event.date >= todayStr);
   }
 
   #formatMonthOnly(monthKey: string): string {
