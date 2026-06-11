@@ -1,5 +1,17 @@
 import { Service } from '@angular/core';
+import {
+  addDays,
+  differenceInDays,
+  format,
+  getYear,
+  parse,
+  parseISO,
+} from 'date-fns';
+import { ru } from 'date-fns/locale';
+import { round } from '../../misc';
 import { CouponEvent, MonthGroup, UserSecurity } from '../type';
+
+const DATE_FORMAT = 'yyyy-MM-dd';
 
 @Service()
 export class CouponScheduleService {
@@ -36,7 +48,7 @@ export class CouponScheduleService {
       .map((group) => ({
         ...group,
         events: [...group.events].sort((a, b) => a.date.localeCompare(b.date)),
-        monthTotal: this.#round(group.monthTotal),
+        monthTotal: round(group.monthTotal),
       }))
       .sort((a, b) => a.monthKey.localeCompare(b.monthKey));
   }
@@ -47,10 +59,9 @@ export class CouponScheduleService {
     options?: { remainingOnly?: boolean },
   ): MonthGroup[] {
     const prefix = `${year}-`;
-    const today = new Date();
-    const todayStr = today.toISOString().slice(0, 10);
+    const todayStr = format(new Date(), DATE_FORMAT);
     const remainingOnly =
-      options?.remainingOnly ?? year === today.getFullYear();
+      options?.remainingOnly ?? year === getYear(new Date());
 
     return monthGroups
       .filter((group) => group.monthKey.startsWith(prefix))
@@ -63,7 +74,7 @@ export class CouponScheduleService {
           ...group,
           monthLabel: this.#formatMonthOnly(group.monthKey),
           events,
-          monthTotal: this.#round(
+          monthTotal: round(
             events.reduce((sum, event) => sum + event.totalAmount, 0),
           ),
         };
@@ -80,11 +91,10 @@ export class CouponScheduleService {
   }
 
   getYearTotal(monthGroups: MonthGroup[], year: number): number {
-    const today = new Date();
-    const todayStr = today.toISOString().slice(0, 10);
-    const isCurrentYear = year === today.getFullYear();
+    const todayStr = format(new Date(), DATE_FORMAT);
+    const isCurrentYear = year === getYear(new Date());
 
-    return this.#round(
+    return round(
       monthGroups
         .flatMap((group) => group.events)
         .filter((event) => event.date.startsWith(`${year}-`))
@@ -94,11 +104,9 @@ export class CouponScheduleService {
   }
 
   #formatMonthOnly(monthKey: string): string {
-    const [year, month] = monthKey.split('-').map(Number);
+    const date = parse(`${monthKey}-01`, DATE_FORMAT, new Date());
 
-    return new Date(year, month - 1, 1).toLocaleDateString('ru-BY', {
-      month: 'long',
-    });
+    return format(date, 'LLLL', { locale: ru });
   }
 
   #buildCouponEvents(holding: UserSecurity): CouponEvent[] {
@@ -112,16 +120,16 @@ export class CouponScheduleService {
     }
 
     const periodStart = definition.last_coupon_date ?? definition.issue_date;
-    const periodDays =
-      nextDate === maturityDate
-        ? this.#daysBetween(periodStart, nextDate)
-        : this.#daysBetween(periodStart, nextDate);
+    const periodDays = differenceInDays(
+      parseISO(nextDate),
+      parseISO(periodStart),
+    );
 
     if (periodDays <= 0) {
       return [];
     }
 
-    const amountPerBond = this.#round(
+    const amountPerBond = round(
       definition.nominal *
         (definition.coupon_rate / 100) *
         (periodDays / 365),
@@ -138,7 +146,7 @@ export class CouponScheduleService {
       stateSecurityId: definition.state_security_id,
       quantity,
       amountPerBond,
-      totalAmount: this.#round(amountPerBond * quantity),
+      totalAmount: round(amountPerBond * quantity),
       currency: definition.currency,
       isEstimated: true as const,
     }));
@@ -159,7 +167,10 @@ export class CouponScheduleService {
         break;
       }
 
-      const upcoming = this.#addDays(current, periodDays);
+      const upcoming = format(
+        addDays(parseISO(current), periodDays),
+        DATE_FORMAT,
+      );
       if (upcoming <= current) {
         break;
       }
@@ -177,26 +188,7 @@ export class CouponScheduleService {
     return dates;
   }
 
-  #daysBetween(from: string, to: string): number {
-    const start = new Date(`${from}T00:00:00`);
-    const end = new Date(`${to}T00:00:00`);
-    return Math.round((end.getTime() - start.getTime()) / 86_400_000);
-  }
-
-  #addDays(date: string, days: number): string {
-    const next = new Date(`${date}T00:00:00`);
-    next.setDate(next.getDate() + days);
-    return next.toISOString().slice(0, 10);
-  }
-
   #formatMonthLabel(date: string): string {
-    return new Date(`${date}T00:00:00`).toLocaleDateString('ru-BY', {
-      month: 'long',
-      year: 'numeric',
-    });
-  }
-
-  #round(value: number): number {
-    return Math.round(value * 100) / 100;
+    return format(parseISO(date), 'LLLL yyyy', { locale: ru });
   }
 }
