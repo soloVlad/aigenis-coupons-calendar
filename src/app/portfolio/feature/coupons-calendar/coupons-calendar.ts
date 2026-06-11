@@ -7,9 +7,7 @@ import {
   IonContent,
   IonHeader,
   IonItem,
-  IonLabel,
   IonList,
-  IonNote,
   IonRefresher,
   IonRefresherContent,
   IonSelect,
@@ -42,8 +40,6 @@ import { PortfolioController } from '../../util/portfolio-controller';
     IonSelectOption,
     IonList,
     IonItem,
-    IonLabel,
-    IonNote,
     IonBadge,
   ],
 })
@@ -139,7 +135,7 @@ export class CouponsCalendar implements OnInit {
   protected formatDate(date: string): string {
     return new Date(`${date}T00:00:00`).toLocaleDateString('ru-BY', {
       day: 'numeric',
-      month: 'short',
+      month: 'long',
     });
   }
 

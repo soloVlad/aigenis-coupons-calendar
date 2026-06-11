@@ -97,22 +97,29 @@
             event of group.events;
             track event.stateSecurityId + event.date + event.kind
           ) {
-            <ion-item>
-              <ion-label>
-                <h3>{{ event.bondSymbol }}</h3>
-                <p>{{ event.stateSecurityId }}</p>
-                <ion-badge [color]="event.kind === 'nominal' ? 'primary' : 'medium'">
-                  {{ formatEventKind(event.kind) }}
-                </ion-badge>
-              </ion-label>
-              <ion-note slot="end">
-                <div>{{ formatDate(event.date) }}</div>
-                <div>
-                  {{ event.quantity }} x
-                  {{ formatAmount(event.amountPerBond, event.currency) }}
+            <ion-item class="payout-item" lines="full">
+              <div class="payout-item__content">
+                <div class="payout-item__row payout-item__row--primary">
+                  <span class="payout-date">{{ formatDate(event.date) }}</span>
+                  <span class="payout-amount">{{
+                    formatAmount(event.totalAmount, event.currency)
+                  }}</span>
                 </div>
-                <strong>{{ formatAmount(event.totalAmount, event.currency) }}</strong>
-              </ion-note>
+                <div class="payout-item__row payout-item__row--secondary">
+                  <div class="payout-item__bond">
+                    <span class="payout-title">{{ event.bondSymbol }}</span>
+                    <ion-badge
+                      [color]="event.kind === 'nominal' ? 'primary' : 'medium'"
+                    >
+                      {{ formatEventKind(event.kind) }}
+                    </ion-badge>
+                  </div>
+                  <span class="payout-per-bond">
+                    {{ event.quantity }} ×
+                    {{ formatAmount(event.amountPerBond, event.currency) }}
+                  </span>
+                </div>
+              </div>
             </ion-item>
           }
         </ion-list>

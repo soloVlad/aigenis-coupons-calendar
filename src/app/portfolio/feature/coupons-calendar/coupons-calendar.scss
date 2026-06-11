@@ -89,16 +89,60 @@
   font-weight: 600;
 }
 
-ion-note {
+.payout-item {
+  --padding-top: 0.75rem;
+  --padding-bottom: 0.75rem;
+}
+
+.payout-item__content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  width: 100%;
+}
+
+.payout-item__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.75rem;
+}
+
+.payout-item__row--secondary {
+  align-items: flex-start;
+}
+
+.payout-date {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.payout-amount {
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.2;
   text-align: right;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
-ion-note strong {
-  display: block;
-  margin-top: 0.25rem;
+.payout-item__bond {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
 }
 
-ion-label ion-badge {
-  margin-top: 0.35rem;
+.payout-title {
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+.payout-per-bond {
+  font-size: 0.8125rem;
+  color: var(--ion-color-medium);
+  text-align: right;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
