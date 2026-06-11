@@ -38,6 +38,44 @@
         </ion-button>
       </ion-buttons>
     </ion-toolbar>
+
+    <ion-toolbar class="summary-toolbar">
+      <section class="summary">
+        <div class="summary-row summary-row--total">
+          <span class="summary-row__label">
+            @if (isCurrentYear()) {
+              Payouts until end of {{ selectedYear() }}
+            } @else {
+              Payouts for {{ selectedYear() }}
+            }
+          </span>
+          <span class="summary-row__value">
+            <span class="summary-approx" aria-hidden="true">≈</span>
+            {{ formatAmount(yearTotals().total) }}
+          </span>
+        </div>
+
+        <div class="summary-row">
+          <span class="summary-row__label">{{
+            formatEventKind('coupon')
+          }}</span>
+          <span class="summary-row__value">
+            <span class="summary-approx" aria-hidden="true">≈</span>
+            {{ formatAmount(yearTotals().coupons) }}
+          </span>
+        </div>
+
+        <div class="summary-row">
+          <span class="summary-row__label">{{
+            formatEventKind('nominal')
+          }}</span>
+          <span class="summary-row__value">
+            <span class="summary-approx" aria-hidden="true">≈</span>
+            {{ formatAmount(yearTotals().nominal) }}
+          </span>
+        </div>
+      </section>
+    </ion-toolbar>
   }
 </ion-header>
 
@@ -63,42 +101,6 @@
       <p>No payouts in {{ selectedYear() }}.</p>
     </div>
   } @else {
-    <section class="summary">
-      <div class="summary-row summary-row--total">
-        <span class="summary-row__label">
-          @if (isCurrentYear()) {
-            Payouts until end of {{ selectedYear() }}
-          } @else {
-            Payouts for {{ selectedYear() }}
-          }
-        </span>
-        <span class="summary-row__value">
-          <span class="summary-approx" aria-hidden="true">≈</span>
-          {{ formatAmount(yearTotals().total) }}
-        </span>
-      </div>
-
-      <div class="summary-row">
-        <span class="summary-row__label">{{
-          formatEventKind('coupon')
-        }}</span>
-        <span class="summary-row__value">
-          <span class="summary-approx" aria-hidden="true">≈</span>
-          {{ formatAmount(yearTotals().coupons) }}
-        </span>
-      </div>
-
-      <div class="summary-row">
-        <span class="summary-row__label">{{
-          formatEventKind('nominal')
-        }}</span>
-        <span class="summary-row__value">
-          <span class="summary-approx" aria-hidden="true">≈</span>
-          {{ formatAmount(yearTotals().nominal) }}
-        </span>
-      </div>
-    </section>
-
     @for (group of visibleMonthGroups(); track group.monthKey) {
       <section class="month-group">
         <div class="month-header">
