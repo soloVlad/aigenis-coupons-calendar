@@ -10,7 +10,7 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideTransloco } from '@jsverse/transloco';
 import { routes } from './app.routes';
 import { provideIonicAngular } from '@ionic/angular/standalone';
-import { authInterceptor } from './auth';
+import { authInterceptor, AuthController } from './auth';
 import { AVAILABLE_LOCALES, LocaleService, TranslocoHttpLoader } from './language';
 
 export const appConfig: ApplicationConfig = {
@@ -30,6 +30,10 @@ export const appConfig: ApplicationConfig = {
       },
       loader: TranslocoHttpLoader,
     }),
-    provideAppInitializer(() => inject(LocaleService).init()),
+    provideAppInitializer(() => {
+      const authController = inject(AuthController);
+      const localeService = inject(LocaleService);
+      return authController.init().then(() => localeService.init());
+    }),
   ],
 };

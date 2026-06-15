@@ -1,10 +1,11 @@
 import { Service } from '@angular/core';
+import { SecureStorage } from '@aparajita/capacitor-secure-storage';
 
 const ACCESS_TOKEN_KEY = 'access_token';
 
 @Service()
 export class AuthController {
-  #accessToken = sessionStorage.getItem(ACCESS_TOKEN_KEY) ?? '';
+  #accessToken = '';
 
   get accessToken() {
     return this.#accessToken;
@@ -12,15 +13,20 @@ export class AuthController {
 
   set accessToken(token: string) {
     this.#accessToken = token;
-    sessionStorage.setItem(ACCESS_TOKEN_KEY, token);
+    SecureStorage.set(ACCESS_TOKEN_KEY, token);
   }
 
   get isAuthenticated() {
     return this.#accessToken.length > 0;
   }
 
+  async init(): Promise<void> {
+    const token = await SecureStorage.get(ACCESS_TOKEN_KEY);
+    this.#accessToken = typeof token === 'string' ? token : '';
+  }
+
   logout() {
     this.#accessToken = '';
-    sessionStorage.removeItem(ACCESS_TOKEN_KEY);
+    SecureStorage.remove(ACCESS_TOKEN_KEY);
   }
 }
