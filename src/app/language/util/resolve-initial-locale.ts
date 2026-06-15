@@ -1,8 +1,8 @@
 import { AppLocale } from '../type';
 import { readStoredLocale } from './locale-storage';
 
-export function resolveInitialLocale(): AppLocale {
-  const saved = readStoredLocale();
+export async function resolveInitialLocale(): Promise<AppLocale> {
+  const saved = await readStoredLocale();
   if (saved) {
     return saved;
   }

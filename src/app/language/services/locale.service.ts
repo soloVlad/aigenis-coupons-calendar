@@ -10,19 +10,18 @@ export class LocaleService {
 
   readonly activeLang = signal<AppLocale>('en');
 
-  init(): Promise<void> {
-    const lang = resolveInitialLocale();
+  async init(): Promise<void> {
+    const lang = await resolveInitialLocale();
     document.documentElement.lang = lang;
     this.activeLang.set(lang);
 
-    return firstValueFrom(this.#transloco.load(lang)).then(() => {
-      this.#transloco.setActiveLang(lang);
-    });
+    await firstValueFrom(this.#transloco.load(lang));
+    this.#transloco.setActiveLang(lang);
   }
 
-  toggleLocale(): void {
+  async toggleLocale(): Promise<void> {
     const next = toggleLocaleUtil(this.activeLang());
-    storeLocale(next);
+    await storeLocale(next);
     document.documentElement.lang = next;
     this.activeLang.set(next);
     this.#transloco.setActiveLang(next);
