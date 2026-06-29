@@ -1,5 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
+import { apiUrl } from '../../misc';
 import { EMPTY, expand, Observable } from 'rxjs';
 import { map, reduce } from 'rxjs/operators';
 import { PaginatedResponse, UserSecurity } from '../type';
@@ -12,8 +13,10 @@ export class PortfolioApi {
     const params = new HttpParams().set('page', page).set('page_size', pageSize);
 
     return this.#http.get<PaginatedResponse<UserSecurity>>(
-      '/aigenis-api/api/v1/user_security_definition/',
-      { params },
+      apiUrl('/api/v1/user_security_definition/'),
+      {
+        params,
+      },
     );
   }
 

@@ -4,6 +4,11 @@ const config: CapacitorConfig = {
   appId: 'com.slvd.aigeniscouponcalendar',
   appName: 'Aigenis Coupon Calendar',
   webDir: 'dist/aigenis-coupons-calendar/browser',
+  plugins: {
+    CapacitorHttp: {
+      enabled: true,
+    },
+  },
 };
 
 export default config;
