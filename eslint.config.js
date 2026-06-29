@@ -8,7 +8,7 @@ const eslintPluginPrettier = require('eslint-plugin-prettier/recommended');
 
 module.exports = defineConfig([
   {
-    ignores: ['dist/**', '.angular/**', 'node_modules/**', 'coverage/**'],
+    ignores: ['dist/**', '.angular/**', 'node_modules/**', 'coverage/**', 'android/**'],
   },
   {
     files: ['**/*.ts'],
