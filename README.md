@@ -1,59 +1,37 @@
-# AigenisCouponsCalendar
+# Aigenis Coupon Calendar
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.1.
+A mobile-friendly calendar for [Aigenis](https://invest.aigenis.by) investors to see upcoming bond coupon and nominal payouts from their portfolio.
 
-## Development server
+## Problem
 
-To start a local development server, run:
+If you hold bonds on Aigenis, payout dates and amounts are spread across individual securities in your portfolio. Planning cash flow for the year means checking each position manually.
 
-```bash
-ng serve
-```
+This app connects to the Aigenis API, loads your holdings, and builds a single payout calendar grouped by month. You can filter by year, see totals for coupons and nominal repayments, and refresh your schedule on demand.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Features
 
-## Code scaffolding
+- Sign in with your Aigenis account
+- Month-by-month view of upcoming coupon and nominal payouts
+- Year filter with annual totals
+- English and Russian UI
+- Android app via Capacitor (web build also supported)
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Tech stack
 
-```bash
-ng generate component component-name
-```
+| Layer        | Technologies                                                       |
+| ------------ | ------------------------------------------------------------------ |
+| Framework    | [Angular](https://angular.dev/) 22, standalone components, signals |
+| UI           | [Ionic](https://ionicframework.com/) 8                             |
+| Mobile       | [Capacitor](https://capacitorjs.com/) 8 (Android)                  |
+| i18n         | [Transloco](https://jsverse.github.io/transloco/)                  |
+| Dates        | [date-fns](https://date-fns.org/)                                  |
+| HTTP / state | Angular HttpClient, RxJS                                           |
+| Tooling      | pnpm, ESLint, Prettier, Husky                                      |
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## About this project
 
-```bash
-ng generate --help
-```
+This is a personal test project built with significant help from AI coding assistants (Cursor). It was created to explore how far AI-assisted development can take a real-world mobile app — from scaffolding and API integration to native packaging — not as an official Aigenis product.
 
-## Building
+## Getting started
 
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+See [CONTRIBUTION.md](./CONTRIBUTION.md) for prerequisites, local development, building, testing, and Android packaging.
