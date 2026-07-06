@@ -19,6 +19,20 @@
   padding-top: 1rem;
 }
 
+.remember-me {
+  --padding-start: 0;
+  --inner-padding-end: 0;
+  --background: transparent;
+
+  ion-checkbox {
+    --checkbox-background: transparent;
+
+    &::part(label) {
+      margin-inline-start: 0.5rem;
+    }
+  }
+}
+
 .login-footer {
   box-shadow: none;
 

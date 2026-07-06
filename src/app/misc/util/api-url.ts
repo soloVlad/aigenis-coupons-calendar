@@ -11,3 +11,7 @@ export function apiUrl(path: string): string {
 export function isApiRequest(url: string): boolean {
   return url.startsWith(API_BASE_URL);
 }
+
+export function isLoginRequest(url: string): boolean {
+  return url.includes('/api/v4/user/sign-in');
+}

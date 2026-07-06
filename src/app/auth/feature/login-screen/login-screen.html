@@ -30,6 +30,16 @@
         <ion-input-password-toggle slot="end" />
       </ion-input>
     </section>
+
+    <ion-item lines="none" class="remember-me">
+      <ion-checkbox
+        labelPlacement="end"
+        [checked]="rememberCredentials()"
+        (ionChange)="rememberCredentials.set($event.detail.checked)"
+      >
+        {{ 'login.rememberMe' | transloco }}
+      </ion-checkbox>
+    </ion-item>
   </form>
 </ion-content>
 

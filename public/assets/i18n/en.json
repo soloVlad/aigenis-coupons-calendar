@@ -7,6 +7,7 @@
     "title": "Sign in",
     "phone": "Phone number",
     "password": "Password",
+    "rememberMe": "Remember me",
     "submit": "Sign in"
   },
   "calendar": {
@@ -21,6 +22,7 @@
     "nominal": "Nominal redemption"
   },
   "errors": {
-    "loadHoldings": "Failed to load bond holdings."
+    "loadHoldings": "Failed to load bond holdings.",
+    "sessionExpired": "Your session has expired. Please sign in again."
   }
 }

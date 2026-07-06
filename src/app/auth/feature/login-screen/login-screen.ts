@@ -5,11 +5,13 @@ import { TranslocoPipe } from '@jsverse/transloco';
 import {
   IonButton,
   IonButtons,
+  IonCheckbox,
   IonContent,
   IonFooter,
   IonHeader,
   IonInput,
   IonInputPasswordToggle,
+  IonItem,
   IonTitle,
   IonToolbar,
 } from '@ionic/angular/standalone';
@@ -32,6 +34,8 @@ import { AuthController } from '../../util/auth-controller';
     IonFooter,
     IonInput,
     IonInputPasswordToggle,
+    IonItem,
+    IonCheckbox,
     FormRoot,
     FormField,
     IonButton,
@@ -43,6 +47,8 @@ export class LoginScreen {
   readonly #authApi = inject(AuthApi);
   readonly #authCtrl = inject(AuthController);
   readonly #router = inject(Router);
+
+  protected readonly rememberCredentials = signal(false);
 
   protected loginModel = signal<LoginRequest>({
     phone: '',
@@ -57,9 +63,16 @@ export class LoginScreen {
 
   async #login() {
     this.#authApi.login(this.loginModel()).subscribe({
-      next: (response) => {
+      next: async (response) => {
         this.#authCtrl.accessToken = response.access;
-        this.#router.navigate(['/calendar']);
+
+        if (this.rememberCredentials()) {
+          await this.#authCtrl.saveCredentials(this.loginModel());
+        } else {
+          await this.#authCtrl.clearCredentials();
+        }
+
+        await this.#router.navigate(['/calendar']);
       },
     });
   }

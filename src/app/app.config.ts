@@ -10,14 +10,14 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideTransloco } from '@jsverse/transloco';
 import { routes } from './app.routes';
 import { provideIonicAngular } from '@ionic/angular/standalone';
-import { authInterceptor, AuthController } from './auth';
+import { authInterceptor, AuthController, unauthorizedInterceptor } from './auth';
 import { AVAILABLE_LOCALES, LocaleService, TranslocoHttpLoader } from './language';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
-    provideHttpClient(withInterceptors([authInterceptor])),
+    provideHttpClient(withInterceptors([unauthorizedInterceptor, authInterceptor])),
     provideIonicAngular({
       mode: 'md',
     }),
