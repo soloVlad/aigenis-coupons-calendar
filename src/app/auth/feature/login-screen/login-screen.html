@@ -52,8 +52,13 @@
       shape="round"
       type="submit"
       form="login-form"
+      [disabled]="loading()"
     >
-      {{ 'login.submit' | transloco }}
+      @if (loading()) {
+        <ion-spinner />
+      } @else {
+        {{ 'login.submit' | transloco }}
+      }
     </ion-button>
   </ion-toolbar>
 </ion-footer>

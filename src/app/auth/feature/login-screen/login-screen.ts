@@ -12,9 +12,11 @@ import {
   IonInput,
   IonInputPasswordToggle,
   IonItem,
+  IonSpinner,
   IonTitle,
   IonToolbar,
 } from '@ionic/angular/standalone';
+import { firstValueFrom } from 'rxjs';
 import { LanguageToggle } from '../../../language';
 import { AuthApi } from '../../api/auth-api';
 import { LoginRequest } from '../../type';
@@ -41,6 +43,7 @@ import { AuthController } from '../../util/auth-controller';
     IonButton,
     TranslocoPipe,
     LanguageToggle,
+    IonSpinner,
   ],
 })
 export class LoginScreen {
@@ -49,6 +52,7 @@ export class LoginScreen {
   readonly #router = inject(Router);
 
   protected readonly rememberCredentials = signal(false);
+  protected readonly loading = signal(false);
 
   protected loginModel = signal<LoginRequest>({
     phone: '',
@@ -62,18 +66,21 @@ export class LoginScreen {
   });
 
   async #login() {
-    this.#authApi.login(this.loginModel()).subscribe({
-      next: async (response) => {
-        this.#authCtrl.accessToken = response.access;
+    this.loading.set(true);
 
-        if (this.rememberCredentials()) {
-          await this.#authCtrl.saveCredentials(this.loginModel());
-        } else {
-          await this.#authCtrl.clearCredentials();
-        }
+    try {
+      const response = await firstValueFrom(this.#authApi.login(this.loginModel()));
+      this.#authCtrl.accessToken = response.access;
 
-        await this.#router.navigate(['/calendar']);
-      },
-    });
+      if (this.rememberCredentials()) {
+        await this.#authCtrl.saveCredentials(this.loginModel());
+      } else {
+        await this.#authCtrl.clearCredentials();
+      }
+
+      await this.#router.navigate(['/calendar']);
+    } finally {
+      this.loading.set(false);
+    }
   }
 }
