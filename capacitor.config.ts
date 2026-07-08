@@ -2,7 +2,7 @@ import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'com.slvd.aigeniscouponcalendar',
-  appName: 'Aigenis Coupon Calendar',
+  appName: 'Coupons',
   webDir: 'dist/aigenis-coupons-calendar/browser',
   plugins: {
     CapacitorHttp: {
