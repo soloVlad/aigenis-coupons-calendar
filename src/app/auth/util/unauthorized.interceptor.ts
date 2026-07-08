@@ -2,6 +2,7 @@ import { HttpContextToken, HttpErrorResponse, HttpInterceptorFn } from '@angular
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslocoService } from '@jsverse/transloco';
+import { ToastController } from '@ionic/angular/standalone';
 import { catchError, finalize, from, Observable, shareReplay, switchMap, throwError } from 'rxjs';
 import { isApiRequest, isLoginRequest, showToast } from '../../misc';
 import { AuthApi } from '../api/auth-api';
@@ -29,6 +30,7 @@ export const unauthorizedInterceptor: HttpInterceptorFn = (req, next) => {
       const authApi = inject(AuthApi);
       const router = inject(Router);
       const transloco = inject(TranslocoService);
+      const toastController = inject(ToastController);
 
       const handleSessionExpired = () => {
         authController.logout();
@@ -36,7 +38,7 @@ export const unauthorizedInterceptor: HttpInterceptorFn = (req, next) => {
         if (!sessionExpiredHandled) {
           sessionExpiredHandled = true;
           router.navigate(['/login']);
-          showToast(transloco.translate('errors.sessionExpired'));
+          showToast(toastController, transloco.translate('errors.sessionExpired'), 'danger');
         }
 
         return throwError(() => error);

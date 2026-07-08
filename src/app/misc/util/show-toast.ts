@@ -1,11 +1,15 @@
-import { inject } from '@angular/core';
-import { ToastController } from '@ionic/angular/standalone';
+import { ToastController, ToastOptions } from '@ionic/angular/standalone';
 
-export async function showToast(message: string): Promise<void> {
-  const toast = await inject(ToastController).create({
+export async function showToast(
+  toastController: ToastController,
+  message: string,
+  color?: ToastOptions['color'],
+): Promise<void> {
+  const toast = await toastController.create({
     message,
     duration: 3000,
-    position: 'bottom',
+    position: 'top',
+    color,
   });
 
   await toast.present();

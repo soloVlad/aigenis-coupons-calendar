@@ -22,6 +22,7 @@
     "nominal": "Nominal redemption"
   },
   "errors": {
+    "loginFailed": "Sign in failed. Check your phone number and password.",
     "loadHoldings": "Failed to load bond holdings.",
     "sessionExpired": "Your session has expired. Please sign in again."
   }
