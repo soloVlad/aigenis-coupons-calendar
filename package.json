@@ -11,7 +11,8 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "prepare": "husky",
-    "assets:android": "capacitor-assets generate --android --iconBackgroundColor '#FFFFFF' --splashBackgroundColor '#FFFFFF'"
+    "assets:android": "capacitor-assets generate --android --iconBackgroundColor '#FFFFFF' --splashBackgroundColor '#FFFFFF'",
+    "build:android": "node scripts/build-android.mjs"
   },
   "lint-staged": {
     "*.{ts,html}": [
