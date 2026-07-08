@@ -1,5 +1,5 @@
 import { Service } from '@angular/core';
-import { SecureStorage } from '@aparajita/capacitor-secure-storage';
+import { SecureStoragePlugin } from 'capacitor-secure-storage-plugin';
 import { LoginRequest } from '../type';
 import {
   clearStoredCredentials,
@@ -19,7 +19,7 @@ export class AuthController {
 
   set accessToken(token: string) {
     this.#accessToken = token;
-    SecureStorage.set(ACCESS_TOKEN_KEY, token);
+    SecureStoragePlugin.set({ key: ACCESS_TOKEN_KEY, value: token });
   }
 
   get isAuthenticated() {
@@ -27,8 +27,12 @@ export class AuthController {
   }
 
   async init(): Promise<void> {
-    const token = await SecureStorage.get(ACCESS_TOKEN_KEY);
-    this.#accessToken = typeof token === 'string' ? token : '';
+    try {
+      const { value } = await SecureStoragePlugin.get({ key: ACCESS_TOKEN_KEY });
+      this.#accessToken = value;
+    } catch {
+      this.#accessToken = '';
+    }
   }
 
   getStoredCredentials(): Promise<LoginRequest | null> {
@@ -45,7 +49,7 @@ export class AuthController {
 
   logout() {
     this.#accessToken = '';
-    SecureStorage.remove(ACCESS_TOKEN_KEY);
+    SecureStoragePlugin.remove({ key: ACCESS_TOKEN_KEY });
     clearStoredCredentials();
   }
 }
